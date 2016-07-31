@@ -37,6 +37,11 @@ public class JpaJukitoRunner extends JukitoRunner {
                     unitOfWork.begin();
                 } catch (final IllegalStateException e) {
                     // fine to ignore - see com.google.inject.persist.jpa.JpaPersistService.get()
+                    //
+                    // UnitOfWork will be started implicitly
+                    // when injection of EntityManager to test class happens
+                    // but I want to ensure UnitOfWork started here
+
                 }
             }
 
