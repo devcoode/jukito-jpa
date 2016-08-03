@@ -25,25 +25,13 @@ public class JpaJukitoRunner extends JukitoRunner {
     @Override
     protected Object createTest() throws Exception {
         this.unitOfWork = getInjector().getInstance(UnitOfWork.class);
+        this.unitOfWork.begin();
         return super.createTest();
     }
 
     @Override
     public void run(final RunNotifier notifier) {
         notifier.addListener(new RunListener() {
-            @Override
-            public void testStarted(final Description description) throws Exception {
-                try {
-                    unitOfWork.begin();
-                } catch (final IllegalStateException e) {
-                    // fine to ignore - see com.google.inject.persist.jpa.JpaPersistService.get()
-                    //
-                    // UnitOfWork will be started implicitly
-                    // when injection of EntityManager to test class happens
-                    // but I want to ensure UnitOfWork started here
-
-                }
-            }
 
             @Override
             public void testFinished(final Description description) throws Exception {
